@@ -1,4 +1,5 @@
 import { Card, CardMedia, CardContent, Typography, Button } from '@mui/material';
+import { getRelativeTime } from '../utils';
 
 const NewsCard = ({ article }) => {
   return (
@@ -17,7 +18,7 @@ const NewsCard = ({ article }) => {
           {article.description || 'No description available'}
         </Typography>
         <Typography variant="caption" display="block" sx={{ mt: 1 }}>
-          {article.source.name} • {new Date(article.publishedAt).toLocaleDateString()}
+          {article.source.name} • {getRelativeTime(article.publishedAt)}
         </Typography>
         <Button 
           size="small" 
