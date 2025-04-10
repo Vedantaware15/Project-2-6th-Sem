@@ -2,7 +2,6 @@ import React from 'react';
 import { Box, Button, TextField, Typography, Paper, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Link, useNavigate } from 'react-router-dom';
-import GoogleIcon from '@mui/icons-material/Google';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -72,8 +71,6 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 }));
 
 const Signup = () => {
-  const navigate = useNavigate();
-
   const handleSignup = (e) => {
     e.preventDefault();
     // Add signup logic here

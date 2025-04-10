@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Button, TextField, Typography, Paper, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import LoginIcon from '@mui/icons-material/Login';
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -71,8 +71,6 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 }));
 
 const Login = () => {
-  const navigate = useNavigate();
-
   const handleLogin = (e) => {
     e.preventDefault();
     // Add login logic here

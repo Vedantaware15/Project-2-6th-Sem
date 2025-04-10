@@ -3,7 +3,7 @@ import axios from 'axios';
 import { getRelativeTime } from '../utils/timeUtils';
 import './../App.css';
 
-const Movies = () => {
+const TVShows = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [summaries, setSummaries] = useState({});
@@ -12,7 +12,7 @@ const Movies = () => {
     const fetchNews = async () => {
       try {
         const res = await axios.get(
-          `https://newsapi.org/v2/everything?q=movies&language=en&apiKey=${process.env.REACT_APP_NEWS_API_KEY}`
+          `https://newsapi.org/v2/everything?q=tv+shows&language=en&apiKey=${process.env.REACT_APP_NEWS_API_KEY}`
         );
         setArticles(res.data.articles);
       } catch (err) {
@@ -37,7 +37,7 @@ const Movies = () => {
 
   return (
     <div>
-      <h2 className="page-title">Movies News</h2>
+      <h2 className="page-title">TV Shows News</h2>
       <div className="news-grid">
         {articles.map((article, index) => (
           <div className="news-card" key={index}>
@@ -91,4 +91,4 @@ const Movies = () => {
   );
 };
 
-export default Movies; 
+export default TVShows; 
