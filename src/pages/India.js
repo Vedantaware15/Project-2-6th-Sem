@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Grid, Typography } from '@mui/material';
-import NewsCard from '../components/NewsCard';
-import Loading from '../components/Loading';
 import axios from 'axios';
+import './../App.css';
 
 const India = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [summaries, setSummaries] = useState({});
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -16,7 +16,8 @@ const India = () => {
         );
         setArticles(res.data.articles);
       } catch (err) {
-        console.error(err);
+        setError(err.message);
+        console.error("Error fetching India news:", err);
       } finally {
         setLoading(false);
       }
@@ -24,20 +25,71 @@ const India = () => {
     fetchNews();
   }, []);
 
-  if (loading) return <Loading />;
+  const handleSummarize = async (content, index) => {
+    try {
+      const res = await axios.post('http://localhost:5000/api/summarize', { content });
+      setSummaries(prev => ({ ...prev, [index]: res.data.summary }));
+    } catch (err) {
+      console.error('Summarization failed', err);
+    }
+  };
+
+  if (loading) return <div className="loading">Loading India news...</div>;
+  if (error) return <div className="error-message">Error: {error}</div>;
 
   return (
     <div>
-      <Typography variant="h4" gutterBottom>
-        India News
-      </Typography>
-      <Grid container spacing={3}>
-        {articles.map((article, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <NewsCard article={article} />
-          </Grid>
-        ))}
-      </Grid>
+      <h2 className="page-title">India News</h2>
+      <div className="news-grid">
+        {articles.length > 0 ? (
+          articles.map((article, index) => (
+            <div className="news-card" key={index}>
+              <img 
+                src={article.urlToImage || 'https://via.placeholder.com/300x180?text=No+Image'} 
+                alt={article.title} 
+                className="news-image" 
+              />
+              <div className="news-content">
+                <h3 className="news-title">{article.title}</h3>
+                <p className="news-description">
+                  {article.description || 'No description available'}
+                </p>
+                <div className="news-source">
+                  <span>{article.source.name}</span>
+                  <span>{new Date(article.publishedAt).toLocaleDateString()}</span>
+                </div>
+
+                <button 
+                  onClick={() => handleSummarize(article.content || article.description, index)}
+                  style={{ marginTop: '10px', background: '#0f3460', color: 'white', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                >
+                  Summarize
+                </button>
+
+                {summaries[index] && (
+                  <div className="summary" style={{ marginTop: '10px', background: '#f4f4f4', padding: '10px', borderRadius: '6px' }}>
+                    <strong>Summary:</strong>
+                    <p>{summaries[index]}</p>
+                  </div>
+                )}
+
+                <a 
+                  href={article.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="read-more-link"
+                >
+                  Read more →
+                </a>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="error-message">
+            No India articles found. Please try again later.
+          </div>
+        )}
+      </div>
     </div>
   );
 };

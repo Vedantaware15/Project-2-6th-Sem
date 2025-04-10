@@ -6,12 +6,13 @@ const World = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [summaries, setSummaries] = useState({});
 
   useEffect(() => {
     const fetchNews = async () => {
       try {
         const res = await axios.get(
-          `https://newsapi.org/v2/top-headlines?country=us&pageSize=30&apiKey=${process.env.REACT_APP_NEWS_API_KEY}`
+          `https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.REACT_APP_NEWS_API_KEY}`
         );
         setArticles(res.data.articles);
       } catch (err) {
@@ -23,6 +24,15 @@ const World = () => {
     };
     fetchNews();
   }, []);
+
+  const handleSummarize = async (content, index) => {
+    try {
+      const res = await axios.post('http://localhost:5000/api/summarize', { content });
+      setSummaries(prev => ({ ...prev, [index]: res.data.summary }));
+    } catch (err) {
+      console.error('Summarization failed', err);
+    }
+  };
 
   if (loading) return <div className="loading">Loading world news...</div>;
   if (error) return <div className="error-message">Error: {error}</div>;
@@ -48,6 +58,21 @@ const World = () => {
                   <span>{article.source.name}</span>
                   <span>{new Date(article.publishedAt).toLocaleDateString()}</span>
                 </div>
+
+                <button 
+                  onClick={() => handleSummarize(article.content || article.description, index)}
+                  style={{ marginTop: '10px', background: '#0f3460', color: 'white', padding: '6px 12px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                >
+                  Summarize
+                </button>
+
+                {summaries[index] && (
+                  <div className="summary" style={{ marginTop: '10px', background: '#f4f4f4', padding: '10px', borderRadius: '6px' }}>
+                    <strong>Summary:</strong>
+                    <p>{summaries[index]}</p>
+                  </div>
+                )}
+
                 <a 
                   href={article.url} 
                   target="_blank" 
@@ -61,7 +86,7 @@ const World = () => {
           ))
         ) : (
           <div className="error-message">
-            No world news articles found. Please try again later.
+            No world articles found. Please try again later.
           </div>
         )}
       </div>
