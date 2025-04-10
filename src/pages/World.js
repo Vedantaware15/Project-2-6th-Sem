@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { getRelativeTime } from '../utils/timeUtils';
 import './../App.css';
-import { getRelativeTime } from '../utils';
 
 const World = () => {
   const [articles, setArticles] = useState([]);
