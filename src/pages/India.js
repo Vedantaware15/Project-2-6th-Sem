@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './../App.css';
+import { getRelativeTime } from '../utils';
 
 const India = () => {
   const [articles, setArticles] = useState([]);
@@ -56,7 +57,7 @@ const India = () => {
                 </p>
                 <div className="news-source">
                   <span>{article.source.name}</span>
-                  <span>{new Date(article.publishedAt).toLocaleDateString()}</span>
+                  <span>{getRelativeTime(article.publishedAt)}</span>
                 </div>
 
                 <button 
