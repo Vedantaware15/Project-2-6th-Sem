@@ -1,88 +1,70 @@
-import { Box, Button } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
-import HowToRegIcon from '@mui/icons-material/HowToReg';
-
-const StyledButton = styled(Button)(({ theme }) => ({
-  color: '#fff',
-  borderColor: 'rgba(255, 255, 255, 0.3)',
-  '&:hover': {
-    borderColor: '#fff',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  margin: '0 4px',
-  textTransform: 'none',
-  borderRadius: '6px',
-  padding: '4px 12px',
-  fontSize: '0.8rem',
-  minWidth: 'auto',
-  transition: 'all 0.3s ease',
-}));
+import React from 'react';
+import { Link } from 'react-router-dom';
+import ThemeToggle from './ThemeToggle';
+import { useTheme } from '../context/ThemeContext';
 
 const Header = () => {
-  const navigate = useNavigate();
+  const { isDarkMode } = useTheme();
 
   return (
-    <Box
-      sx={{
-        position: 'relative',
+    <header style={{
+      backgroundColor: isDarkMode ? '#1D1D1D' : '#FFFFFF',
+      borderBottom: `1px solid ${isDarkMode ? '#333333' : '#DCDCDC'}`,
+      padding: '1rem',
+      position: 'sticky',
+      top: 0,
+      zIndex: 1000
+    }}>
+      <div style={{
+        maxWidth: '1100px',
+        margin: '0 auto',
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: '1rem 2rem',
-        backgroundColor: '#1a1a2e',
-        color: 'white',
-        boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
-      }}
-    >
-      <h1 style={{
-        fontWeight: 600,
-        background: 'linear-gradient(45deg, #fff, #e0e0e0)',
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        margin: 0,
-        fontSize: '2rem',
-        cursor: 'pointer',
-      }}
-      onClick={() => navigate('/')}
-      >
-        News Hub
-      </h1>
-
-      <Box sx={{ 
-        position: 'absolute',
-        right: '1.5rem',
-        display: 'flex',
-        gap: 1
+        justifyContent: 'space-between',
+        alignItems: 'center'
       }}>
-        <StyledButton
-          variant="outlined"
-          startIcon={<PersonOutlineIcon sx={{ fontSize: '1rem' }} />}
-          onClick={() => navigate('/login')}
-          sx={{
-            '&:hover': {
-              backgroundColor: 'rgba(255, 255, 255, 0.1)',
-            }
-          }}
-        >
-          Login
-        </StyledButton>
-        <StyledButton
-          variant="contained"
-          startIcon={<HowToRegIcon sx={{ fontSize: '1rem' }} />}
-          onClick={() => navigate('/signup')}
-          sx={{
-            backgroundColor: '#0f3460',
-            '&:hover': {
-              backgroundColor: '#0a2647',
-            }
-          }}
-        >
-          Sign Up
-        </StyledButton>
-      </Box>
-    </Box>
+        <Link to="/" style={{
+          textDecoration: 'none',
+          color: isDarkMode ? '#FFFFFF' : '#1D1D1D',
+          fontSize: '1.5rem',
+          fontWeight: 'bold'
+        }}>
+          News Hub
+        </Link>
+        <div style={{
+          display: 'flex',
+          gap: '16px',
+          alignItems: 'center'
+        }}>
+          <ThemeToggle />
+          <Link to="/login">
+            <button style={{
+              backgroundColor: isDarkMode ? '#BB1919' : '#FFFFFF',
+              border: `1px solid ${isDarkMode ? '#BB1919' : '#1D1D1D'}`,
+              color: isDarkMode ? '#FFFFFF' : '#1D1D1D',
+              padding: '8px 16px',
+              borderRadius: '20px',
+              cursor: 'pointer',
+              textDecoration: 'none'
+            }}>
+              Login
+            </button>
+          </Link>
+          <Link to="/signup">
+            <button style={{
+              backgroundColor: isDarkMode ? '#FFFFFF' : '#BB1919',
+              border: `1px solid ${isDarkMode ? '#FFFFFF' : '#BB1919'}`,
+              color: isDarkMode ? '#1D1D1D' : '#FFFFFF',
+              padding: '8px 16px',
+              borderRadius: '20px',
+              cursor: 'pointer',
+              textDecoration: 'none'
+            }}>
+              Sign Up
+            </button>
+          </Link>
+        </div>
+      </div>
+    </header>
   );
 };
 

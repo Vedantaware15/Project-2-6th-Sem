@@ -24,6 +24,7 @@ nav {
   background-color: #16213e;
   padding: 0.5rem;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 nav a {
@@ -37,6 +38,11 @@ nav a {
 
 nav a:hover {
   background-color: #0f3460;
+}
+
+.nav-separator {
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0.5rem;
 }
 
 .container {
