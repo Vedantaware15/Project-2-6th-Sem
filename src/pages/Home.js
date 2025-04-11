@@ -7,6 +7,8 @@ import { useTheme } from '../context/ThemeContext';
 import { videoData, audioData, discoverMoreItems } from '../constants/mockData';
 import './../App.css';
 
+//parth jadhav is npc 
+
 const Home = () => {
   const { isDarkMode } = useTheme();
   const [articles, setArticles] = useState([]);
